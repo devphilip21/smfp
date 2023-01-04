@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/devjoeween/smfp/v1"
+	"github.com/stretchr/testify/assert"
 )
 
 type (
@@ -14,27 +15,20 @@ type (
 
 func TestPipe(t *testing.T) {
 	t.Run("works multiple pipe", func(t *testing.T) {
-		givens := []PipeGiven{
-			{1}, {2}, {3}, {4}, {5}, {6}, {7},
-		}
-		expected := []int{11, 12, 13, 14, 15, 16, 17}
+		assert := assert.New(t)
+
+		givens := []PipeGiven{{1}, {2}, {3}, {4}, {5}, {6}, {7}}
+		expected := []int{15, 16, 17}
 
 		results := smfp.Pipe[[]PipeGiven]([]*smfp.Worker{
 			smfp.Map(func(item PipeGiven, index int) int {
 				return item.Value + 10
 			}),
-			smfp.Map(func(item int, index int) PipeGiven {
-				return PipeGiven{
-					Value: item,
-				}
+			smfp.Filter(func(item int, index int) bool {
+				return item > 14
 			}),
-		}).Execute(givens).([]PipeGiven)
+		}).Execute(givens).([]int)
 
-		for i, result := range results {
-			if expected[i] != result.Value {
-				t.Fail()
-				return
-			}
-		}
+		assert.EqualValues(results, expected)
 	})
 }
