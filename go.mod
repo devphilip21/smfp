@@ -1,4 +1,4 @@
-module github.com/devjoeween/smfp
+module github.com/devjaewon/smfp
 
 go 1.19
 

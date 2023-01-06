@@ -3,7 +3,7 @@ package smfp_test
 import (
 	"testing"
 
-	"github.com/devjoeween/smfp/v1"
+	"github.com/devjaewon/smfp/v1"
 	"github.com/stretchr/testify/assert"
 )
 
